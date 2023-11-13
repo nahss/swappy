@@ -10,10 +10,9 @@ const HeroBanner = () => {
                <div className="row">
                   <div className="col-xl-6 col-lg-6 col-md-8">
                      <div className="hero-content">
-                        <span>Learn New Skills & Popular Courses</span>
-                        <h2 className="hero-title mb-35">For Every Student, Every <i>Classroom</i>.</h2>
-                        <p>Dramatically supply transparent deliverables before backward<br />comp internal or "organic"
-                           sources. Competently leverage other.</p>
+                        <span>Welcome to swappy</span>
+                        <h2 className="hero-title mb-35">Step Into Style and Comfort <i>Classroom</i>.</h2>
+                        <p>Discover the best Sneakers to swap.</p>
                         <div className="tp-banner-btn">
                            <Link href="/swap-requests" className="tp-btn">Swap Requests</Link>
                            <Link href="/profile" className="tp-btn ml-6">My Sneakers</Link>

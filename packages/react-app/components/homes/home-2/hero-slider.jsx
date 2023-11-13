@@ -6,8 +6,8 @@ const slider_data = [
   {
     id: 1,
     bg_img: "/assets/img/slider/slider-bg-01.jpg",
-    slider_text: "Learn New Skills & Popular Courses",
-    title: "For Every Student, Every Classroom.",
+    slider_text: "Welcome to swappy",
+    title: "Step Into Style and Comfort",
     total_courses: "3.5k",
     courses_text: "Free Pro Courses",
     students: "235k",
@@ -18,8 +18,8 @@ const slider_data = [
   {
     id: 2,
     bg_img: "/assets/img/slider/slider-bg-02.jpg",
-    slider_text: "Learn New Skills & Popular Courses",
-    title: "For Every Student, Every Classroom.",
+    slider_text: "Welcome to swappy",
+    title: "Step Into Style and Comfort",
     total_courses: "3.5k",
     courses_text: "Free Pro Courses",
     students: "235k",
