@@ -59,7 +59,7 @@ Ensure you have the following installed:
 To initiate a new Celo Composer project, use the `@celo/celo-composer` CLI tool. This command-line interface enables you to swiftly kickstart dApp development for various frameworks, including React, React Native, Flutter, and Angular. Execute the following command and follow the prompts:
 ```bash
 npx @celo/celo-composer@latest create
-
+```
 
 
 ## Usage
