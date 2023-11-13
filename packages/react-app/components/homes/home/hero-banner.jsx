@@ -11,7 +11,7 @@ const HeroBanner = () => {
                   <div className="col-xl-6 col-lg-6 col-md-8">
                      <div className="hero-content">
                         <span>Welcome to swappy</span>
-                        <h2 className="hero-title mb-35">Step Into Style and Comfort <i>Classroom</i>.</h2>
+                        <h2 className="hero-title mb-35">Step Into Style and Comfort <i></i>.</h2>
                         <p>Discover the best Sneakers to swap.</p>
                         <div className="tp-banner-btn">
                            <Link href="/swap-requests" className="tp-btn">Swap Requests</Link>
