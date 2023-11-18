@@ -8,7 +8,7 @@ contract SneakerMarketplace {
     Counters.Counter private _sneakerIds;
     Counters.Counter private _swapIds;
 
-    address payable owner;
+    address payable public owner;
 
     struct Sneaker {
         uint256 id;
@@ -55,43 +55,7 @@ contract SneakerMarketplace {
         sneakers[sneakerId].listed = true;
     }
 
-//    temporarily disabling this feature
-
-    // function requestSwap(uint256 mySneakerId, address otherUser, uint256 theirSneakerId) public {
-    //     require(msg.sender != otherUser, "Cannot swap with yourself");
-    //     require(sneakers[mySneakerId].owner == msg.sender, "You do not own the selected sneaker");
-    //     require(sneakers[theirSneakerId].owner == otherUser, "The other user does not own the selected sneaker");
-    //     require(sneakers[mySneakerId].listed, "Sneaker must be listed to be requested for a swap");
-
-    //     _swapIds.increment();
-    //     uint256 newSwapId = _swapIds.current();
-    //     swapRequests[newSwapId] = SwapRequest(newSwapId, msg.sender, otherUser, mySneakerId, theirSneakerId, false);
-    //     allSwapRequestIds.push(newSwapId);
-    //     emit SwapRequested(newSwapId, msg.sender, otherUser, mySneakerId, theirSneakerId);
-    // }
-
-    // function approveSwap(uint256 requestId) public {
-    //     uint256 mySneakerId = swapRequests[requestId].mySneakerId;
-    //     uint256 theirSneakerId = swapRequests[requestId].theirSneakerId;
-
-    //     require(sneakers[theirSneakerId].owner == msg.sender, "Only the owner can approve the swap");
-    //     require(!swapRequests[requestId].approved, "Swap request has already been approved");
-
-    //     // Swap the ownership of the sneakers directly
-    //     sneakers[mySneakerId].owner = swapRequests[requestId].owner;
-    //     sneakers[theirSneakerId].owner = swapRequests[requestId].requester;
-
-    //     swapRequests[requestId].approved = true;
-    //     sneakers[mySneakerId].listed = false;
-    //     sneakers[theirSneakerId].listed = false;
-
-    //     emit SwapApproved(requestId);
-    //     emit SneakerTransferred(mySneakerId, msg.sender, sneakers[mySneakerId].owner);
-    //     emit SneakerTransferred(theirSneakerId, sneakers[theirSneakerId].owner, msg.sender);
-    // }
-
-
-    function swapSneaker (uint256 mySneakerId, address otherUser, uint256 theirSneakerId) public {
+    function swapSneaker(uint256 mySneakerId, address otherUser, uint256 theirSneakerId) public {
         require(msg.sender != otherUser, "Cannot swap with yourself");
         require(sneakers[mySneakerId].owner == msg.sender, "You do not own the selected sneaker");
         require(sneakers[theirSneakerId].owner == otherUser, "The other user does not own the selected sneaker");
@@ -108,45 +72,43 @@ contract SneakerMarketplace {
         emit SneakerTransferred(theirSneakerId, sneakers[theirSneakerId].owner, msg.sender);
     }
 
-
     /**
-        * @dev Get a list of sneakers owned by the caller.
+     * @dev Get a list of sneakers owned by the caller.
      * @return An array of Sneaker structs representing the user's sneakers.
      */
     function getMySneakers() public view returns (Sneaker[] memory) {
-        uint totalSneakers = _sneakerIds.current();
-        uint sneakerCount = 0;
-        uint currentIndex = 0;
+        uint256 totalSneakers = _sneakerIds.current();
+        uint256 mySneakerCount = 0;
 
-        for (uint i = 0; i < totalSneakers; i++) {
-            if (sneakers[i + 1].owner == msg.sender) {
-                sneakerCount += 1;
+        for (uint256 i = 1; i <= totalSneakers; i++) {
+            if (sneakers[i].owner == msg.sender) {
+                mySneakerCount++;
             }
         }
 
-        Sneaker[] memory mySneakers = new Sneaker[](sneakerCount);
-        for (uint i = 0; i < totalSneakers; i++) {
-            if (sneakers[i + 1].owner == msg.sender) {
-                uint currentId = i + 1;
-                Sneaker storage currentSneaker = sneakers[currentId];
-                mySneakers[currentIndex] = currentSneaker;
-                currentIndex += 1;
+        Sneaker[] memory mySneakers = new Sneaker[](mySneakerCount);
+        uint256 currentIndex = 0;
+
+        for (uint256 i = 1; i <= totalSneakers; i++) {
+            if (sneakers[i].owner == msg.sender) {
+                mySneakers[currentIndex] = sneakers[i];
+                currentIndex++;
             }
         }
 
         return mySneakers;
     }
 
-    function getSwapRequestLength() public view returns (uint) {
+    function getSwapRequestLength() public view returns (uint256) {
         return allSwapRequestIds.length;
     }
 
     function getAllSwapRequests() public view returns (SwapRequest[] memory) {
-        uint totalRequests = allSwapRequestIds.length;
+        uint256 totalRequests = allSwapRequestIds.length;
         SwapRequest[] memory allRequests = new SwapRequest[](totalRequests);
 
-        for (uint i = 0; i < totalRequests; i++) {
-            uint requestId = allSwapRequestIds[i];
+        for (uint256 i = 0; i < totalRequests; i++) {
+            uint256 requestId = allSwapRequestIds[i];
             allRequests[i] = swapRequests[requestId];
         }
 
@@ -154,23 +116,24 @@ contract SneakerMarketplace {
     }
 
     function getMySwapRequests() public view returns (SwapRequest[] memory) {
-        uint totalRequests = allSwapRequestIds.length;
-        uint requestCount = 0;
-        uint currentIndex = 0;
+        uint256 totalRequests = allSwapRequestIds.length;
+        uint256 myRequestsCount = 0;
 
-        for (uint i = 0; i < totalRequests; i++) {
-            uint requestId = allSwapRequestIds[i];
+        for (uint256 i = 0; i < totalRequests; i++) {
+            uint256 requestId = allSwapRequestIds[i];
             if (swapRequests[requestId].requester == msg.sender || swapRequests[requestId].owner == msg.sender) {
-                requestCount += 1;
+                myRequestsCount++;
             }
         }
 
-        SwapRequest[] memory myRequests = new SwapRequest[](requestCount);
-        for (uint i = 0; i < totalRequests; i++) {
-            uint requestId = allSwapRequestIds[i];
+        SwapRequest[] memory myRequests = new SwapRequest[](myRequestsCount);
+        uint256 currentIndex = 0;
+
+        for (uint256 i = 0; i < totalRequests; i++) {
+            uint256 requestId = allSwapRequestIds[i];
             if (swapRequests[requestId].requester == msg.sender || swapRequests[requestId].owner == msg.sender) {
                 myRequests[currentIndex] = swapRequests[requestId];
-                currentIndex += 1;
+                currentIndex++;
             }
         }
 
@@ -178,30 +141,20 @@ contract SneakerMarketplace {
     }
 
     /**
-    * @dev Get a list of all sneakers currently listed in the marketplace.
+     * @dev Get a list of all sneakers currently listed in the marketplace.
      * @return An array of Sneaker structs representing the listed sneakers.
      */
     function getListedSneakers() public view returns (Sneaker[] memory) {
-        uint totalSneakers = _sneakerIds.current();
-        uint listedSneakerCount = 0;
-        uint currentIndex = 0;
+        uint256 totalSneakers = _sneakerIds.current();
+        uint256 listedSneakerCount = 0;
 
-        for (uint i = 0; i < totalSneakers; i++) {
-            if (sneakers[i + 1].listed) {
-                listedSneakerCount += 1;
+        for (uint256 i = 1; i <= totalSneakers; i++) {
+            if (sneakers[i].listed) {
+                listedSneakerCount++;
             }
         }
 
         Sneaker[] memory listedSneakers = new Sneaker[](listedSneakerCount);
-        for (uint i = 0; i < totalSneakers; i++) {
-            if (sneakers[i + 1].listed) {
-                uint currentId = i + 1;
-                Sneaker storage currentSneaker = sneakers[currentId];
-                listedSneakers[currentIndex] = currentSneaker;
-                currentIndex += 1;
-            }
-        }
+        uint256 currentIndex = 0;
 
-        return listedSneakers;
-    }
-}
+
