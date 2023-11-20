@@ -35,7 +35,7 @@ contract SneakerMarketplace {
 
     event SneakerListed(uint256 indexed sneakerId, address indexed owner, string name, string imageUrl, string color, string size);
     event SwapRequested(uint256 indexed requestId, address indexed requester, address indexed owner, uint256 mySneakerId, uint256 theirSneakerId);
-    event SwapApproved(uint256 indexed requestId);
+
     event SneakerTransferred(uint256 indexed sneakerId, address indexed from, address indexed to);
 
     constructor() {
